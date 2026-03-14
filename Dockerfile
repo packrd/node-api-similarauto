@@ -12,6 +12,6 @@ RUN npm run build
 
 COPY . .
 
-EXPOSE 6565
+EXPOSE 7575
 
 CMD ["npm", "run", "start"]
