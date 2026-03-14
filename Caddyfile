@@ -1,3 +1,0 @@
-api.similarauto.com.br {
-    reverse_proxy node_api_similarauto:7575
-}
