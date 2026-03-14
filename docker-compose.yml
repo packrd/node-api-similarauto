@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  node_api_similarauto:
+    build:
+      context: .
+    container_name: node_api_similarauto
+    ports:
+      - "7575:7575"
+    networks:
+      - node_network
+    environment:
+      - ROXTER_CPUS=0
+      - ROXTER_MODE=prod
+      - ROXTER_PORT=7575
+      - ROXTER_PATH_ROUTE=./src
+      - BASEURL_GOOGLESHEETS=http://165.227.14.215:4109
+      - BASEURL_NODEWORKS=http://165.227.14.215:4133
+      - API_POLLINATIONS_AI=sk_px03FhEDkuCE0ZergNnsJFXnqMzq1gii
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://node_api_similarauto:7575/health"]
+      interval: 12s
+      timeout: 10s
+      retries: 3
+    restart: always # Reinicia o contêiner em caso de falha
+
+networks:
+  node_network:
+    driver: bridge

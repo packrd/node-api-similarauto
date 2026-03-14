@@ -1,0 +1,20 @@
+{
+  "name": "api-similar-auto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --env-file=.env.test src/test.js",
+    "dev": "node --env-file=.env.test --watch src/app.js",
+    "start": "node src/app.js",
+    "build": "npm run force-remove-cache && npm install --force",
+    "force-remove-cache": "npm cache clean --force"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "roxterjs": "^0.1.9"
+  }
+}
