@@ -1,0 +1,3 @@
+api2.omnielabs.com {
+    reverse_proxy node_api_similarauto:7575
+}

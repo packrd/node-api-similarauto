@@ -21,8 +21,26 @@ services:
       interval: 12s
       timeout: 10s
       retries: 3
-    restart: always # Reinicia o contêiner em caso de falha
+    restart: always
+
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    networks:
+      - node_network
 
 networks:
   node_network:
     driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
