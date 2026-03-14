@@ -1,5 +1,5 @@
-import ChatApplication from "../../../../../../apis/node.gpt.js";
-import { AgentNanoVehicle } from "../../../../../../agents/agent.nano.vehicle.js";
+/* import ChatApplication from "../../../../../../apis/node.gpt.js";
+import { AgentNanoVehicle } from "../../../../../../agents/agent.nano.vehicle.js"; */
 import DataSheets from "../../../../../../databaase/node.api.sheets.js";
 import normalize from "../../../../../../helpers/normalize.js";
 import { stopWords } from "../../../../../../helpers/stopWords.js";
@@ -9,8 +9,8 @@ import { stopWords } from "../../../../../../helpers/stopWords.js";
 */
 
 export default async function POST({ res, body }) {
-  const { query } = (await body) || {};
-  //const query = "Farol alto do ford fiesta 2007";
+  let { query } = (await body) || {};
+
   if (!query)
     return res.end(
       JSON.stringify({
@@ -21,15 +21,14 @@ export default async function POST({ res, body }) {
     );
 
   let filter = [];
-  let search = query;
 
   /* let agentPrompt = await ChatApplication({
     message: AgentNanoVehicle(query),
   });
 
   if (agentPrompt?.data && agentPrompt?.status) {
-    search = JSON.parse(agentPrompt?.data?.content || "[]") || [];
-    search = search.charkeys.join(" ");
+    query = JSON.parse(agentPrompt?.data?.content || "[]") || [];
+    query = query.keywords.join(" ");
   } */
 
   const responseDataSheetsProducts = await DataSheets("/api/v1/consult/all", {
@@ -42,7 +41,7 @@ export default async function POST({ res, body }) {
     responseDataSheetsProducts?.status &&
     responseDataSheetsProducts?.data?.[0]
   ) {
-    let tokens = search
+    let tokens = query
       .split(/[ ,.-]+/)
       .map((t) => normalize(t.trim()))
       .filter((t) => t && t.length > 1 && !stopWords.includes(t));
@@ -51,7 +50,7 @@ export default async function POST({ res, body }) {
 
     filter = responseDataSheetsProducts?.data
       .map((item) => {
-        const keys = item.charkeys?.split(",").map((k) => normalize(k.trim()));
+        const keys = item.keywords?.split(",").map((k) => normalize(k.trim()));
 
         const score = tokens.reduce((acc, token) => {
           const match = keys?.some(
