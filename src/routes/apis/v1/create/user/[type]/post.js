@@ -45,16 +45,15 @@ export default async function POST({ res, body, keys }) {
 
   data[type === "mechanic" ? "isMechanic" : "isSupplier"] = true;
   data.permission = "off";
-  data.document = data?.documentProprietary || data?.document;
 
-  let phone = data?.phone?.replace(/\D/gi, "");
-  phone = `55${phone}@c.us`;
+  let phoneWhatsApp = data?.phone?.replace(/\D/gi, "");
+  phoneWhatsApp = `55${phoneWhatsApp}@c.us`;
 
   const hasClient = await DataSheets("/api/v1/consult/column", {
     projectId: "similarauto",
     sheetLabel: "users",
     sheetId: "1gGcW7P2y9Ba2a_2WD03AHp6ztxfF88zA3Ed-7umRPCU",
-    filters: [{ column: "user", search: phone }],
+    filters: [{ column: "user", search: phoneWhatsApp }],
   });
 
   if (hasClient?.data?.[0])
@@ -66,13 +65,13 @@ export default async function POST({ res, body, keys }) {
       }),
     );
 
-  const entiesData = entiesProfileData({ data: { ...data, phone } });
+  const entiesData = entiesProfileData({ data });
 
   const createClient = await DataSheets("/api/v1/put", {
     projectId: "similarauto",
     sheetLabel: "users",
     sheetId: "1gGcW7P2y9Ba2a_2WD03AHp6ztxfF88zA3Ed-7umRPCU",
-    user: phone,
+    user: phoneWhatsApp,
     createdAt: Date.now(),
     data: JSON.stringify({ ...entiesData }),
   });

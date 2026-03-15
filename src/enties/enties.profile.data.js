@@ -1,5 +1,9 @@
 export const entiesProfileData = ({ data }) => {
   return {
+    fullNameProprietary: data?.fullNameProprietary,
+    emailProprietary: data?.emailProprietary,
+    documentProprietary: data?.documentProprietary,
+    phoneProprietary: data?.phoneProprietary,
     fullName: data?.fullName,
     document: data?.document,
     email: data?.email,
