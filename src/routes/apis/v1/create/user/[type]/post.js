@@ -14,6 +14,7 @@ export default async function POST({ res, body, keys }) {
     !data?.phone ||
     !data?.email ||
     !data?.fullName ||
+    !data?.documentProprietary ||
     !type ||
     !/mechanic|supplier/.test(type) ||
     !getCNPJ?.cnpj
@@ -22,7 +23,7 @@ export default async function POST({ res, body, keys }) {
       JSON.stringify({
         status: false,
         error: "not-permission",
-        message: "Verifique se os dados estão preenchidos corretamente",
+        message: "Verifique se os dados foram preenchidos corretamente",
       }),
     );
 
@@ -44,6 +45,7 @@ export default async function POST({ res, body, keys }) {
 
   data[type === "mechanic" ? "isMechanic" : "isSupplier"] = true;
   data.permission = "off";
+  data.document = data?.documentProprietary || data?.document;
 
   let phone = data?.phone?.replace(/\D/gi, "");
   phone = `55${phone}@c.us`;
@@ -72,9 +74,7 @@ export default async function POST({ res, body, keys }) {
     sheetId: "1gGcW7P2y9Ba2a_2WD03AHp6ztxfF88zA3Ed-7umRPCU",
     user: phone,
     createdAt: Date.now(),
-    data: JSON.stringify({
-      ...entiesData,
-    }),
+    data: JSON.stringify({ ...entiesData }),
   });
 
   if (createClient?.data?.newRow?.[0])
